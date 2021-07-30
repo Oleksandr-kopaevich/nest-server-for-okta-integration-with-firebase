@@ -3,19 +3,20 @@ import { ExpressAdapter } from '@nestjs/platform-express';
 import * as express from 'express';
 import * as functions from 'firebase-functions';
 import { AppModule } from './app.module';
-  
+
 const expressServer = express();
- 
+
 const createNestServer = async (expressInstance): Promise<void> => {
   const app = await NestFactory.create(
     AppModule,
     new ExpressAdapter(expressInstance),
   );
- 
+  
   await app.init();
 };
- 
-export const api = functions.region('europe-west1')
+
+export const api = functions
+  .region('europe-west1')
   .https.onRequest(async (request, response) => {
     await createNestServer(expressServer);
     expressServer(request, response);
