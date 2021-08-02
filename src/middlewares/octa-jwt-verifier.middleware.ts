@@ -3,8 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import * as OktaJwtVerifier from '@okta/jwt-verifier';
 require('dotenv').config();
 
-const OKTA_ORG_URL = process.env.OKTA_ORG_URL;
-console.log("OKTA_ORG_URL", OKTA_ORG_URL)
+const OKTA_ORG_URL = `https://${process.env.OKTA_ORG_URL}`;
 
 const oktaJwtVerifier = new OktaJwtVerifier({
   issuer: `${OKTA_ORG_URL}/oauth2/default`,

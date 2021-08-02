@@ -2,8 +2,9 @@ import { Controller, Get, Req, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 import firebaseAdmin from 'firebase-admin';
 import { Request, Response } from 'express';
+require('dotenv').config();
 
-const serviceAccount = require('../.private/serviceAccountKey.json');
+const serviceAccount = require(process.env.ADMIN_ACCOUNT_KEYS_PATH);
 
 export const firebaseApp = firebaseAdmin.initializeApp({
   credential: firebaseAdmin.credential.cert(serviceAccount),
