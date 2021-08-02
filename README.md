@@ -13,10 +13,10 @@ https://explore-firebase-37b42.web.app/ - Uses Firebase hosting for [frontend pa
 
 ## Installation
 
-1. Create .env file and add next values:  
-<b>ADMIN_ACCOUNT_KEYS_PATH</b> - path to JSON file with object details from Firebase project to get access  
+1. Create .env file and add next value:  
 <b>OKTA_ORG_URL</b> - You can copy your domain from the Okta Admin Console. (without 'https://')  
-2. Install all npm packages
+2. Download credentials file from firebase project settings, rename it to `firebase.config.json` and put in `src` folder
+3. Install all npm packages
 ```bash
 $ npm install
 ``` 
@@ -24,7 +24,7 @@ and make sure thay your Firebase CLI is up to date
 ```bash 
 $ npm install -g firebase-tools
 ```
-3. Run Firebase functions emulator locally 
+4. Run Firebase functions emulator locally 
 ```bash
 $ npm run serve
 ```

@@ -2,8 +2,16 @@ import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import * as cors from 'cors';
 import * as express from 'express';
+import firebaseAdmin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import { AppModule } from './app.module';
+import * as firebaseConfig from './firebase.config.json';
+
+firebaseAdmin.initializeApp({
+  credential: firebaseAdmin.credential.cert(
+    firebaseConfig as firebaseAdmin.ServiceAccount,
+  ),
+});
 
 const expressServer = express();
 expressServer.use(

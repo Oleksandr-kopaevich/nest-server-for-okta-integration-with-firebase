@@ -1,33 +1,23 @@
 import { Controller, Get, Req, Res } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Response } from 'express';
 import firebaseAdmin from 'firebase-admin';
-import { Request, Response } from 'express';
-require('dotenv').config();
-
-const serviceAccount = require(process.env.ADMIN_ACCOUNT_KEYS_PATH);
-
-export const firebaseApp = firebaseAdmin.initializeApp({
-  credential: firebaseAdmin.credential.cert(serviceAccount),
-});
+import { RequestWithJWT } from './types/Request';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
-
   @Get('/firebaseCustomToken')
   async getFirebaseCustomToken(
-    @Req() request: Request,
+    @Req() request: RequestWithJWT,
     @Res() res: Response,
   ): Promise<void> {
-    //@ts-ignore
     const oktaUid = request.jwt.claims.uid;
 
     try {
-      const firebaseToken = await firebaseApp.auth().createCustomToken(oktaUid);
-      console.log('firebaseToken', firebaseToken);
+      const firebaseToken = await firebaseAdmin
+        .auth()
+        .createCustomToken(oktaUid);
       res.send(firebaseToken);
     } catch (err) {
-      console.log(err.message);
       res.status(500).send('Error minting token.');
     }
   }

@@ -1,12 +1,18 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { OctaJWTVerifier } from './middlewares/octa-jwt-verifier.middleware';
+import { OktaService } from './okta.service';
 
 @Module({
-  imports: [],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: './.env',
+    }),
+  ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [OktaService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {

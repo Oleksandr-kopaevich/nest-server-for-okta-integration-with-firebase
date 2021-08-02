@@ -1,17 +1,17 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
-import { Request, Response, NextFunction } from 'express';
-import * as OktaJwtVerifier from '@okta/jwt-verifier';
-require('dotenv').config();
-
-const OKTA_ORG_URL = `https://${process.env.OKTA_ORG_URL}`;
-
-const oktaJwtVerifier = new OktaJwtVerifier({
-  issuer: `${OKTA_ORG_URL}/oauth2/default`,
-});
+import { NextFunction, Response } from 'express';
+import { OktaService } from '../okta.service';
+import { RequestWithJWT } from '../types/Request';
 
 @Injectable()
 export class OctaJWTVerifier implements NestMiddleware {
-  async use(req: Request, res: Response, next: NextFunction): Promise<void> {
+  constructor(private readonly oktaService: OktaService) {}
+
+  async use(
+    req: RequestWithJWT,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
     const authHeader = req.headers.authorization || '';
     const match = authHeader.match(/Bearer (.+)/);
 
@@ -23,16 +23,14 @@ export class OctaJWTVerifier implements NestMiddleware {
     const accessToken = match[1];
 
     try {
-      const jwt = await oktaJwtVerifier.verifyAccessToken(
+      const jwt = await this.oktaService.verifyAccessToken(
         accessToken,
         'api://default',
       );
-      //@ts-ignore
       req.jwt = jwt;
 
       return next(); // Pass the request on to the main route.
     } catch (err) {
-      console.log(err.message);
       res.status(401);
       return next('Unauthorized');
     }
