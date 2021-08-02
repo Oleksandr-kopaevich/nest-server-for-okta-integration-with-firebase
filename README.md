@@ -7,7 +7,9 @@
 
   
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter used as backend for integration Okta with Firebase.
+## Live demo
+
+https://explore-firebase-37b42.web.app/ - Uses Firebase hosting for [frontend part (React application)](https://github.com/Oleksandr-kopaevich/client-okta-integration-with-firebase) and Firebase functions for backend part (Nestjs application)
 
 ## Installation
 
@@ -18,6 +20,10 @@
 ```bash
 $ npm install
 ``` 
+and make sure thay your Firebase CLI is up to date
+```bash 
+$ npm install -g firebase-tools
+```
 3. Run Firebase functions emulator locally 
 ```bash
 $ npm run serve
